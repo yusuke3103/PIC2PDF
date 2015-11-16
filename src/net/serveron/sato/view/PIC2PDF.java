@@ -4,23 +4,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import net.serveron.sato.action.BtnListClicked;
 import net.serveron.sato.action.BtnOutPutPDFClicked;
 import net.serveron.sato.action.BtnReferenceClicked;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import net.serveron.sato.util.StringUtil;
 
 public class PIC2PDF extends JFrame {
 
@@ -32,7 +31,8 @@ public class PIC2PDF extends JFrame {
 	private JButton btnOutPutPDF;
 	private JScrollPane scrollPane;
 	private JTable table;
-
+	
+	private DefaultTableModel tableModel = new DefaultTableModel();
 	/**
 	 * Create the frame.
 	 */
@@ -70,9 +70,8 @@ public class PIC2PDF extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				BtnListClicked blc = new BtnListClicked();
 				ArrayList<String> list = blc.run(txtSourcePath.getText());
-				
 				for (int i = 0; i < list.size(); i++) {
-					table.getModel().setValueAt(list.get(i), i, 0);
+					tableModel.addRow(new Object[]{list.get(i)});
 				}
 			}
 		});
@@ -85,8 +84,11 @@ public class PIC2PDF extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				BtnOutPutPDFClicked boppc = new BtnOutPutPDFClicked();
-				ArrayList<String> file = new ArrayList<>();
-				boppc.run(file);
+				String path = boppc.run();
+				if (!StringUtil.isNull(path)){
+					JOptionPane jd = new ProgresView(tableModel, path);
+					jd.show();
+				}
 			}
 		});
 
@@ -101,10 +103,9 @@ public class PIC2PDF extends JFrame {
 		scrollPane.setBounds(12, 64, 410, 145);
 		contentPane.add(scrollPane);
 		
-		
-		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("PATH");
-		table = new JTable(model);
+		table = new JTable();
+		tableModel.addColumn("PATH");
+		table.setModel(tableModel);
 		scrollPane.setViewportView(table);
 
 	}
