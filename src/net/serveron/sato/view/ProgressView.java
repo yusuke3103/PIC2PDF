@@ -49,7 +49,7 @@ public class ProgressView extends ProgressMonitor {
 
 				PDPageContentStream contents = new PDPageContentStream(doc,
 						page);
-
+				
 				PDImageXObject pdImageXObject = PDImageXObject.createFromFile(
 						imgPath, doc);
 
