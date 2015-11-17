@@ -31,8 +31,9 @@ public class PIC2PDF extends JFrame {
 	private JButton btnOutPutPDF;
 	private JScrollPane scrollPane;
 	private JTable table;
-	
+
 	private DefaultTableModel tableModel = new DefaultTableModel();
+
 	/**
 	 * Create the frame.
 	 */
@@ -71,7 +72,7 @@ public class PIC2PDF extends JFrame {
 				BtnListClicked blc = new BtnListClicked();
 				ArrayList<String> list = blc.run(txtSourcePath.getText());
 				for (int i = 0; i < list.size(); i++) {
-					tableModel.addRow(new Object[]{list.get(i)});
+					tableModel.addRow(new Object[] { list.get(i) });
 				}
 			}
 		});
@@ -85,9 +86,9 @@ public class PIC2PDF extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				BtnOutPutPDFClicked boppc = new BtnOutPutPDFClicked();
 				String path = boppc.run();
-				if (!StringUtil.isNull(path)){
-					JOptionPane jd = new ProgresView(tableModel, path);
-					jd.show();
+				if (!StringUtil.isNull(path)) {
+					ProgressView pv = new ProgressView(null, "メッセージ", "", 0, tableModel.getRowCount());
+					pv.createPDF(path, tableModel);
 				}
 			}
 		});
@@ -102,7 +103,7 @@ public class PIC2PDF extends JFrame {
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(12, 64, 410, 145);
 		contentPane.add(scrollPane);
-		
+
 		table = new JTable();
 		tableModel.addColumn("PATH");
 		table.setModel(tableModel);
