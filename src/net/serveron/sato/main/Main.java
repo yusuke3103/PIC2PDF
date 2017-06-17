@@ -2,7 +2,6 @@ package net.serveron.sato.main;
 
 import java.awt.EventQueue;
 
-import net.serveron.sato.view.MenuView;
 import net.serveron.sato.view.PIC2PDF;
 
 public class Main{
@@ -14,7 +13,7 @@ public class Main{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MenuView frame = new MenuView();
+					PIC2PDF frame = new PIC2PDF();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
